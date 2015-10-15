@@ -19,9 +19,53 @@ PNM* Correction::transform()
     int width  = image->width();
     int height = image->height();
 
+
     PNM* newImage = new PNM(width, height, image->format());
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    for (int x=0; x<PIXEL_VAL_MAX+1; x++)
+    {
+        int v = x;
+        v = (v + shift > 255) ? 255 : (v + shift <= 0) ? 0 : (v + shift);
+        v = (v * factor > 255) ? 255 : (v * factor <= 0) ? 0 : (v * factor);
+        v = (pow(v, gamma) > 255) ? 255 : (pow(v, gamma) <= 0) ? 0 : (pow(v,gamma));
+        Correction::LUT[x] = v;
+    }
+
+//    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+
+
+    if (image->format() == QImage::Format_Indexed8)
+    {
+        for (int x=0; x<width; x++)
+            for (int y=0; y<height; y++)
+                {
+                    QRgb pixel = image->pixel(x,y); // Getting the pixel(x,y) value
+
+                    int v = qGray(pixel);
+                    v = Correction::LUT[v-1];
+                    newImage->setPixel(x,y, v);
+                }
+    }
+    else //if (image->format() == QImage::Format_RGB32)
+    {
+        for (int x=0; x<width; x++)
+            for (int y=0; y<height; y++)
+            {
+                QRgb pixel = image->pixel(x,y); // Getting the pixel(x,y) value
+
+                int r = qRed(pixel);    // Get the 0-255 value of the R channel
+                int g = qGreen(pixel);  // Get the 0-255 value of the G channel
+                int b = qBlue(pixel);   // Get the 0-255 value of the B channel
+
+                r = Correction::LUT[r-1];
+                g = Correction::LUT[g-1];
+                b = Correction::LUT[b-1];
+
+                QColor newPixel = QColor(r,g,b);
+                newImage->setPixel(x,y, newPixel.rgb());
+
+            }
+    }
 
     return newImage;
 }
