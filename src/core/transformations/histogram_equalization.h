@@ -10,6 +10,7 @@ public:
     HistogramEqualization(PNM*, ImageViewer*);
 
     virtual PNM* transform();
+
 };
 
 
