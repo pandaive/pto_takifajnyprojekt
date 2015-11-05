@@ -1,4 +1,5 @@
 #include "blur_gaussian.h"
+#include <math.h>
 
 BlurGaussian::BlurGaussian(PNM* img) :
     Convolution(img)
@@ -25,7 +26,12 @@ math::matrix<float> BlurGaussian::getMask(int size, Mode)
 {
     math::matrix<float> mask(size, size);
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    int size2 = floor(size/2);
+
+    for (int xM = -size2; xM <= size2; xM++)
+        for (int yM = -size2; yM <= size2; yM++) {
+            mask(xM+size2, yM+2+size2) = getGauss(xM, yM, sigma);
+        }
 
     return mask;
 }
@@ -34,6 +40,7 @@ float BlurGaussian::getGauss(int x, int y, float sigma)
 {    
     qDebug() << Q_FUNC_INFO << "Not implemented yet!";
 
-    return 0;
+    float gauss = (1/(M_PI*sigma*sigma))*exp(-((x*x+y*y)/2*sigma*sigma));
+    return gauss;
 }
 

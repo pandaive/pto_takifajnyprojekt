@@ -21,7 +21,7 @@ PNM* HistogramEqualization::transform()
 
     PNM* newImage = new PNM(width, height, image->format());
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    //qDebug() << Q_FUNC_INFO << "";
 
     if (image->format() == QImage::Format_Indexed8) {
         QHash<int, int>* L = (image->getHistogram()->get(Histogram::Channel::LChannel));
@@ -32,7 +32,7 @@ PNM* HistogramEqualization::transform()
         for (int i = 1; i < PIXEL_VAL_MAX+1; i++)
             D[i] = D[i-1] + p * L->value(i);
 
-        qDebug() << Q_FUNC_INFO << D[255];
+        //qDebug() << Q_FUNC_INFO << D[255];
 
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++) {

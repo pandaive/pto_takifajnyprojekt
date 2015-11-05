@@ -42,7 +42,7 @@ PNM* Correction::transform()
                     QRgb pixel = image->pixel(x,y); // Getting the pixel(x,y) value
 
                     int v = qGray(pixel);
-                    v = Correction::LUT[v-1];
+                    v = Correction::LUT[v];
                     newImage->setPixel(x,y, v);
                 }
     }
@@ -57,9 +57,9 @@ PNM* Correction::transform()
                 int g = qGreen(pixel);  // Get the 0-255 value of the G channel
                 int b = qBlue(pixel);   // Get the 0-255 value of the B channel
 
-                r = Correction::LUT[r-1];
-                g = Correction::LUT[g-1];
-                b = Correction::LUT[b-1];
+                r = Correction::LUT[r];
+                g = Correction::LUT[g];
+                b = Correction::LUT[b];
 
                 QColor newPixel = QColor(r,g,b);
                 newImage->setPixel(x,y, newPixel.rgb());

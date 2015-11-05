@@ -99,11 +99,22 @@ QRgb Transformation::getPixel(int x, int y, Mode mode)
 }
 
 /** Returns a pixel using the Cyclic mode:
- *  pixel(x,y) = pixel(x%width, y%width);
+ *  pixel(x,y) = pixel(x%width, y%height);
  */
 QRgb Transformation::getPixelCyclic(int x, int y)
 {
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    //qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    int width = image->width();
+    int height = image->height();
+
+    if (x < 0)
+        x = width;
+    if (x >= width)
+        x = 0;
+    if (y < 0)
+        y = height;
+    if (y >= height)
+        y = 0;
 
     return image->pixel(x,y);
 }
@@ -114,7 +125,15 @@ QRgb Transformation::getPixelCyclic(int x, int y)
   */
 QRgb Transformation::getPixelNull(int x, int y)
 {
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    int width = image->width();
+    int height = image->height();
+
+    if (x >= width || x <= 0 || y >= height || y < 0) {
+        if (image->format() == QImage::Format_Indexed8)
+            return 0;
+        else //if rgb
+            return qRgb(0,0,0);
+    }
 
     return image->pixel(x,y);
 }
@@ -126,7 +145,18 @@ QRgb Transformation::getPixelNull(int x, int y)
   */
 QRgb Transformation::getPixelRepeat(int x, int y)
 {
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    int width = image->width();
+    int height = image->height();
+
+    if (x < 0)
+        x = 0;
+    if (x >= width)
+        x = width-1;
+    if (y < 0)
+        y = 0;
+    if (y >= height)
+        y = height-1;
+
 
     return image->pixel(x,y);
 }
@@ -138,7 +168,20 @@ math::matrix<float> Transformation::getWindow(int x, int y, int size,
 {
     math::matrix<float> window(size,size);
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    int size2 = floor(size/2);
+
+    for (int xM = -size2; xM <= size2; xM++)
+        for (int yM = -size2; yM <= size2; yM++) {
+
+                switch (channel) {
+                case RChannel: window(xM+size2, yM+2+size2) = qRed(getPixel(x+xM, y+yM, mode)); break;
+                case GChannel: window(xM+size2, yM+2+size2) = qGreen(getPixel(x+xM, y+yM, mode)); break;
+                case BChannel: window(xM+size2, yM+2+size2) = qBlue(getPixel(x+xM, y+yM, mode)); break;
+                case LChannel: window(xM+size2, yM+2+size2) = qGray(getPixel(x+xM, y+yM, mode)); break;
+                }
+        }
+
+    //qDebug() << Q_FUNC_INFO << "Not implemented yet!";
 
     return window;
 }
