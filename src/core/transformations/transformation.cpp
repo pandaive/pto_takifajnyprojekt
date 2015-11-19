@@ -174,10 +174,10 @@ math::matrix<float> Transformation::getWindow(int x, int y, int size,
         for (int yM = -size2; yM <= size2; yM++) {
 
                 switch (channel) {
-                case RChannel: window(xM+size2, yM+2+size2) = qRed(getPixel(x+xM, y+yM, mode)); break;
-                case GChannel: window(xM+size2, yM+2+size2) = qGreen(getPixel(x+xM, y+yM, mode)); break;
-                case BChannel: window(xM+size2, yM+2+size2) = qBlue(getPixel(x+xM, y+yM, mode)); break;
-                case LChannel: window(xM+size2, yM+2+size2) = qGray(getPixel(x+xM, y+yM, mode)); break;
+                case RChannel: window(xM+size2, yM+size2) = qRed(getPixel(x+xM, y+yM, mode)); break;
+                case GChannel: window(xM+size2, yM+size2) = qGreen(getPixel(x+xM, y+yM, mode)); break;
+                case BChannel: window(xM+size2, yM+size2) = qBlue(getPixel(x+xM, y+yM, mode)); break;
+                case LChannel: window(xM+size2, yM+size2) = qGray(getPixel(x+xM, y+yM, mode)); break;
                 }
         }
 

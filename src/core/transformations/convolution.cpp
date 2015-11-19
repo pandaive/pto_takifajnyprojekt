@@ -26,7 +26,7 @@ math::matrix<float> Convolution::getMask(int size, Mode mode = Normalize)
 
     for (int x = 0; x < size; x++)
         for (int y = 0; y < size; y++) {
-            mask(x,y) = 0;
+            mask(x,y) = 0.0;
         }
     mask(floor(size/2), floor(size/2)) = 1.0;
 
