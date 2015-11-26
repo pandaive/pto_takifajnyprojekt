@@ -14,7 +14,13 @@ const int MorphDilate::morph(math::matrix<float> window, math::matrix<bool> se)
 {
     float min = PIXEL_VAL_MAX+1;
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    //qDebug() << Q_FUNC_INFO << "Not implemented yet!";
 
-    return 0;
+    for (int x = 0; x < window.rowno(); x++)
+        for (int y = 0; y < window.rowno(); y++) {
+            if (se(x,y) && window(x,y) < min)
+                min = window(x,y);
+        }
+
+    return min;
 }

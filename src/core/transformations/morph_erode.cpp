@@ -12,9 +12,14 @@ MorphErode::MorphErode(PNM* img, ImageViewer* iv) :
 
 const int MorphErode::morph(math::matrix<float> window, math::matrix<bool> se)
 {
-    float max=0.0;
+    int max = 0;
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    for (int x = 0; x < window.rowno(); x++)
+        for (int y = 0; y < window.rowno(); y++) {
+            if (se(x,y) && window(x,y) > max) {
+                max = window(x,y);
+            }
+        }
 
-    return 0;
+    return max;
 }
