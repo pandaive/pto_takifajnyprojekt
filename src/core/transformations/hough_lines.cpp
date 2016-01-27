@@ -4,6 +4,7 @@
 #include "edge_laplacian.h"
 #include "hough.h"
 
+#include <QLine>
 #include <QPainter>
 
 HoughLines::HoughLines(PNM* img) :
@@ -16,15 +17,18 @@ HoughLines::HoughLines(PNM* img, ImageViewer* iv) :
 {
 }
 
+
 PNM* HoughLines::transform()
 {
     // Cut of value from the image;
     int  threshold      = getParameter("threshold").toInt();
     bool drawWholeLines = getParameter("draw_whole_lines").toBool();
 
-    PNM* newImage = new PNM(image->copy());
+    PNM* newImage = new PNM(image->width(), image->height(), QImage::Format_Mono);
+    newImage->fill(Qt::color1);
     int width = image->width();
     int height = image->height();
+
 
 //    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
 
@@ -44,7 +48,7 @@ PNM* HoughLines::transform()
     int p = houghImage->height();
 
     QPainter* qPainter = new QPainter(newImage);
-    qPainter->setPen(Qt::red);
+    qPainter->setPen(Qt::color1);
 
 
     for (int x = 0; x < theta; x++)
@@ -61,7 +65,8 @@ PNM* HoughLines::transform()
                 int y1 = r/sinTheta;
                 int x2 = width - 1;
                 int y2 = (r - (width-1) * cosTheta)/sinTheta;
-                qPainter->drawLine(x1, y1, x2, y2);
+                QLine line = QLine(x1, y1, x2, y2);
+                qPainter->drawLine(line);
             }
         }
 
@@ -69,7 +74,7 @@ PNM* HoughLines::transform()
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++) {
                 if (qGray(binaryImage->pixel(x,y)) == 0)
-                    newImage->setPixel(x,y,image->pixel(x,y));
+                    newImage->setPixel(x,y,Qt::color0);
             }
     }
 
