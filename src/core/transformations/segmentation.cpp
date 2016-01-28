@@ -28,7 +28,7 @@ QPoint* Segmentation::neighbourhood(QPoint p)
 
 PNM* Segmentation::transform()
 {
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+    //qDebug() << Q_FUNC_INFO << "Not implemented yet!";
     int width = image->width();
     int height = image->height();
 
@@ -60,10 +60,6 @@ PNM* Segmentation::transform()
     hSorted.unique();
 
     int curDist = 0;
-
-
-    qDebug() << Q_FUNC_INFO << "hSorted size:";
-    qDebug() << Q_FUNC_INFO << hSorted.size();
 
     for (std::list<int>::iterator h = hSorted.begin(); h != hSorted.end(); h++) {
         for (int p_i = 0; p_i < width; p_i++)
@@ -176,8 +172,6 @@ PNM* Segmentation::transform()
     for (int i = 0; i < width; i++)
         for (int j = 0; j < height; j++)
             newImage->setPixel(i, j, (lab[i][j]) * 255/max);
-
-    qDebug() << Q_FUNC_INFO << max;
 
 
     return newImage;
