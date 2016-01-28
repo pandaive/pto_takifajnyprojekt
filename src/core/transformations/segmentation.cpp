@@ -73,7 +73,7 @@ PNM* Segmentation::transform()
                                 int q_j = p_j+y;
                                 if (q_i >= 0 && q_j >= 0 && q_i < width && q_j < height)
                                     if (lab[q_i][q_j] > 0 || lab[q_i][q_j] == WSHED) {
-                                        //(∗ Initialize queue with neighbours at level h of current basins or watersheds ∗)
+                                        //( Initialize queue with neighbours at level h of current basins or watersheds )
                                         dist[p_i][p_j] = 1;
                                         fifo.push(QPoint(p_i,p_j));
                                     } //endif
@@ -83,7 +83,7 @@ PNM* Segmentation::transform()
             }//endfor
         curDist = 1;
         fifo.push(QPoint(-1,-1));
-        while(true) { //loop (∗ extend basins ∗)
+        while(true) { //loop ( extend basins )
             QPoint p = fifo.front();
             fifo.pop();
             if (p.x() == -1 && p.y()==-1) {
@@ -106,7 +106,7 @@ PNM* Segmentation::transform()
                         int q_j = p_j + y;
                         if (q_i >= 0 && q_j >= 0 && q_i < width && q_j < height) {
                             if ((dist[q_i][q_j] < curDist) && (lab[q_i][q_j] > 0 || lab[q_i][q_j] == WSHED)) {
-                                //(∗ q belongs to an existing basin or to watersheds ∗)
+                                //( q belongs to an existing basin or to watersheds )
                                 if (lab[q_i][q_j] > 0) {
                                     if (lab[p_i][p_j] == MASK or lab[p_i][p_j] == WSHED)
                                         lab[p_i][p_j] = lab[q_i][q_j]; //41
@@ -118,7 +118,7 @@ PNM* Segmentation::transform()
                                     lab[p_i][p_j] = WSHED;
                             } //48
                             else if (lab[q_i][q_j] == MASK && dist[q_i][q_j] == 0) {
-                                //(∗ q is plateau pixel ∗)
+                                //( q is plateau pixel )
                                 dist[q_i][q_j] = curDist + 1;
                                 fifo.push(QPoint(q_i,q_j));
                             }
@@ -127,7 +127,7 @@ PNM* Segmentation::transform()
                 }//endfor 51
         } //end loop
 
-        //(∗ detect and process new minima at level h ∗)
+        //( detect and process new minima at level h )
         for (int p_i = 0; p_i < width; p_i++)
             for (int p_j = 0; p_j < height; p_j++) {
                 if (qGray(image->pixel(p_i,p_j)) == *h) {
@@ -142,7 +142,7 @@ PNM* Segmentation::transform()
                             QPoint q = fifo.front();
                             fifo.pop();
                             for (int x = -1; x < 2; x++)
-                                for (int y = -1; y < 2; y++) { // 61 (∗ inspect neighbours of q ∗)
+                                for (int y = -1; y < 2; y++) { // 61 ( inspect neighbours of q )
                                     if (x != 0 || y != 0) {
                                         int q_i = q.x();
                                         int q_j = q.y();
